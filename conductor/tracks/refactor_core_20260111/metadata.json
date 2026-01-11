@@ -1,0 +1,8 @@
+﻿{
+  "track_id": "refactor_core_20260111",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-11T15:45:00Z",
+  "updated_at": "2026-01-11T15:45:00Z",
+  "description": "Refactor Core Infrastructure: Consolidate existing scripts into a modular structure, implement robust gemini-1.5-flash API handling with error management, and add visual feedback (Blue/Bold) and reversion logic."
+}
