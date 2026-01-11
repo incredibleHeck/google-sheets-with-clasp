@@ -5,7 +5,7 @@
 - [x] Task: Create GAS service mocks (SpreadsheetApp, PropertiesService, UrlFetchApp) for unit tests.
 - [ ] Task: Conductor - User Manual Verification 'Foundation' (Protocol in workflow.md)
 
-## Phase 2: Core Logic Refactoring
+## Phase 2: Core Logic Refactoring [checkpoint: 0dd04b6]
 - [x] Task: Write Tests: API communication and error handling logic.
 - [x] Task: Implement: Refactored `callGeminiAPI` using `gemini-1.5-flash` with robust error handling.
 - [x] Task: Write Tests: Selection processing and "Selection Intelligence" logic.
