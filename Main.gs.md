@@ -117,175 +117,154 @@ function detectBaseStyles() {
   );
 }
 
+/**
+ * Extracts the valid data range from a selection, starting at DATA_START_ROW.
+ * If entire column(s) selected, returns from DATA_START_ROW to last row with data.
+ * @param {GoogleAppsScript.Spreadsheet.Range} range
+ * @return {GoogleAppsScript.Spreadsheet.Range} - Filtered range starting at DATA_START_ROW
+ */
+function getValidDataRange(range) {
+  const sheet = range.getSheet();
+  const lastRow = sheet.getLastRow();
+  const startRow = Math.max(Config.DATA_START_ROW, range.getRow());
+  const endRow = Math.min(lastRow, range.getRow() + range.getNumRows() - 1);
+
+  if (startRow > endRow) {
+    SpreadsheetApp.getActiveSpreadsheet().toast(
+      "No data found starting from row " + Config.DATA_START_ROW,
+      "HeckTeck"
+    );
+    return null;
+  }
+
+  return sheet.getRange(
+    startRow,
+    range.getColumn(),
+    endRow - startRow + 1,
+    range.getNumColumns()
+  );
+}
+
+/**
+ * Polishes selected cells using Gemini API for grammar/punctuation fixes.
+ */
 function polishSelectedCells() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const selection = sheet.getActiveRange();
-  const data = selection.getValues();
-  let changesCount = 0;
-  let errorCount = 0;
-  const errors = [];
+
+  // Get valid data range starting from row 4
+  const range = getValidDataRange(selection);
+  if (!range) return;
 
   // Save state for undo
-  saveStateForUndo(selection);
+  saveStateForUndo(range);
 
-  SpreadsheetApp.getActiveSpreadsheet().toast(
-    "Polishing selected cells...",
-    "HeckTeck AI"
-  );
+  const data = range.getValues();
+  const baseColors = range.getFontColors();
+  const baseWeights = range.getFontWeights();
 
-  const processedData = SelectionProcessor.processData(data, (text, rowIdx) => {
-    try {
+  try {
+    const processedData = SelectionProcessor.processData(data, (text) => {
       const polished = callGeminiAPI(text, Config.MODEL_NAME, Config.API_KEY);
-      if (polished !== text) {
-        changesCount++;
-        return polished;
-      }
-      return text;
-    } catch (e) {
-      errorCount++;
-      errors.push(`Row ${selection.getRow() + rowIdx}: ${e.message}`);
-      console.error(
-        `Polishing error at row ${selection.getRow() + rowIdx}:`,
-        e
-      );
-      return text;
-    }
-  });
+      return polished || text;
+    });
 
-  if (changesCount > 0) {
-    selection.setValues(processedData);
-    StyleManager.applyActiveStyle(selection);
-  }
+    range.setValues(processedData);
+    range.getFontColors().forEach((row, i) => {
+      row.forEach((_, j) => {
+        StyleManager.applyActiveStyle(range.getCell(i + 1, j + 1));
+      });
+    });
 
-  // Provide detailed feedback
-  let toastMessage = "";
-  if (changesCount > 0 && errorCount === 0) {
-    toastMessage = `✓ Polished ${changesCount} cells!`;
-  } else if (changesCount > 0 && errorCount > 0) {
-    toastMessage = `⚠ Polished ${changesCount} cells. ${errorCount} errors - check logs.`;
-  } else if (errorCount > 0) {
-    toastMessage = `✗ ${errorCount} errors occurred. No changes made.`;
-  } else {
-    toastMessage = "No changes needed.";
-  }
-
-  SpreadsheetApp.getActiveSpreadsheet().toast(toastMessage, "HeckTeck AI");
-
-  if (errors.length > 0 && errors.length <= 5) {
-    console.warn("Polishing errors:", errors.join("\n"));
+    const toastMessage = `✓ Polished ${range.getNumRows()} cells starting from row ${range.getRow()}`;
+    SpreadsheetApp.getActiveSpreadsheet().toast(toastMessage, "HeckTeck");
+  } catch (e) {
+    SpreadsheetApp.getActiveSpreadsheet().toast(
+      `Error polishing cells: ${e.message}`,
+      "HeckTeck Error"
+    );
+    undoLastAction();
   }
 }
 
+/**
+ * Fixes pronouns in selected cells based on CLASSLIST gender data.
+ */
 function fixPronouns() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const selection = sheet.getActiveRange();
-  const data = selection.getValues();
-  const startRow = selection.getRow();
 
-  // 1. Get Classlist Data
-  let classListSheet;
-  try {
-    classListSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-      Config.CLASSLIST_SHEET_NAME
+  // Get valid data range starting from row 4
+  const range = getValidDataRange(selection);
+  if (!range) return;
+
+  // Save state for undo
+  saveStateForUndo(range);
+
+  const classlistSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+    Config.CLASSLIST_SHEET_NAME
+  );
+  if (!classlistSheet) {
+    SpreadsheetApp.getActiveSpreadsheet().toast(
+      `Sheet "${Config.CLASSLIST_SHEET_NAME}" not found`,
+      "HeckTeck Error"
     );
-    if (!classListSheet) {
-      SpreadsheetApp.getUi().alert(
-        `Error: Sheet '${Config.CLASSLIST_SHEET_NAME}' not found.`
-      );
-      return;
-    }
-  } catch (e) {
-    SpreadsheetApp.getUi().alert(`Error accessing classlist: ${e.message}`);
     return;
   }
 
-  const classData = classListSheet.getDataRange().getValues();
-  const studentGenderMap = new Map();
+  const classlistData = classlistSheet.getDataRange().getValues();
+  const genderMap = {};
 
-  // Skip header
-  for (let i = 1; i < classData.length; i++) {
-    const name = classData[i][Config.CLASSLIST_NAME_COL - 1]; // 0-based index
-    const gender = classData[i][Config.CLASSLIST_GENDER_COL - 1];
+  for (let i = Config.DATA_START_ROW - 1; i < classlistData.length; i++) {
+    const name = classlistData[i][Config.CLASSLIST_NAME_COL - 1];
+    const gender = classlistData[i][Config.CLASSLIST_GENDER_COL - 1];
     if (name) {
-      // Normalize gender: "M"/"Male"/"MALE" -> "male", "F"/"Female"/"FEMALE" -> "female"
-      const normalizedGender = normalizeGender(gender);
-      if (normalizedGender) {
-        studentGenderMap.set(name.trim().toLowerCase(), normalizedGender);
-      }
+      genderMap[name.trim()] = normalizeGender(gender);
     }
   }
 
-  // Save state for undo
-  saveStateForUndo(selection);
-
+  const data = range.getValues();
+  const baseColors = range.getFontColors();
+  const baseWeights = range.getFontWeights();
   let changesCount = 0;
-  let skippedCount = 0;
 
-  const processedData = SelectionProcessor.processData(data, (text, rIndex) => {
-    const currentRow = startRow + rIndex;
-    if (currentRow < Config.DATA_START_ROW) {
-      skippedCount++;
-      return text;
-    }
+  try {
+    const processedData = SelectionProcessor.processData(data, (text, rowIndex) => {
+      const studentName = sheet.getRange(range.getRow() + rowIndex, Config.REPORT_NAME_COL).getValue();
+      const gender = genderMap[studentName?.toString().trim()] || "unknown";
 
-    try {
-      // Get Student Name from Report Sheet (Col A)
-      const nameCell = sheet.getRange(currentRow, Config.REPORT_NAME_COL);
-      const studentName = nameCell.getValue();
+      if (gender === "unknown") return text;
 
-      if (!studentName) return text;
+      const pronouns = gender === "male"
+        ? { he: "he", him: "him", his: "his", He: "He", Him: "Him", His: "His" }
+        : { he: "she", him: "her", his: "her", He: "She", Him: "Her", His: "Her" };
 
-      const gender = studentGenderMap.get(studentName.trim().toLowerCase());
-      if (!gender) return text; // Student not found in classlist or no gender set
+      let result = text;
+      Object.entries(pronouns).forEach(([from, to]) => {
+        const regex = new RegExp(`\\b${from}\\b`, "g");
+        result = result.replace(regex, to);
+      });
 
-      let newText = text;
+      if (result !== text) changesCount++;
+      return result;
+    });
 
-      if (gender === "male") {
-        newText = newText
-          .replace(/\bShe\b/g, "He")
-          .replace(/\bshe\b/g, "he")
-          .replace(/\bHer\b/g, "His")
-          .replace(/\bher\b/g, "his")
-          .replace(/\bHers\b/g, "His")
-          .replace(/\bhers\b/g, "his");
-      } else if (gender === "female") {
-        newText = newText
-          .replace(/\bHe\b/g, "She")
-          .replace(/\bhe\b/g, "she")
-          .replace(/\bHis\b/g, "Her")
-          .replace(/\bhis\b/g, "her")
-          .replace(/\bHim\b/g, "Her")
-          .replace(/\bhim\b/g, "her");
-      }
+    range.setValues(processedData);
+    range.getFontColors().forEach((row, i) => {
+      row.forEach((_, j) => {
+        StyleManager.applyActiveStyle(range.getCell(i + 1, j + 1));
+      });
+    });
 
-      if (newText !== text) {
-        changesCount++;
-        return newText;
-      }
-      return text;
-    } catch (e) {
-      console.error(`Error processing row ${currentRow}:`, e);
-      return text;
-    }
-  });
-
-  if (changesCount > 0) {
-    selection.setValues(processedData);
-    StyleManager.applyActiveStyle(selection);
+    const toastMessage = `✓ Fixed pronouns in ${changesCount} cells (rows ${range.getRow()}-${range.getLastRow()})`;
+    SpreadsheetApp.getActiveSpreadsheet().toast(toastMessage, "HeckTeck");
+  } catch (e) {
+    SpreadsheetApp.getActiveSpreadsheet().toast(
+      `Error fixing pronouns: ${e.message}`,
+      "HeckTeck Error"
+    );
+    undoLastAction();
   }
-
-  let toastMessage = "";
-  if (changesCount > 0) {
-    toastMessage = `✓ Fixed pronouns in ${changesCount} cells!`;
-  } else {
-    toastMessage = "No pronoun fixes needed.";
-  }
-
-  if (skippedCount > 0) {
-    toastMessage += ` (${skippedCount} rows before DATA_START_ROW skipped)`;
-  }
-
-  SpreadsheetApp.getActiveSpreadsheet().toast(toastMessage, "HeckTeck");
 }
 
 /**
