@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1768146984916" clover="3.2.0">
+  <project timestamp="1768146984917" name="All files">
+    <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2" elements="17" coveredelements="9" complexity="0" loc="11" ncloc="11" packages="1" files="1" classes="1"/>
+    <file name="gas-mocks.js" path="C:\Users\me\google sheets\test-utils\gas-mocks.js">
+      <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="0" type="stmt"/>
+      <line num="19" count="0" type="stmt"/>
+      <line num="20" count="0" type="stmt"/>
+      <line num="30" count="1" type="stmt"/>
+      <line num="31" count="0" type="stmt"/>
+      <line num="37" count="1" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="45" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>

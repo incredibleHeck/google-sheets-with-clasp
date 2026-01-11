@@ -1,8 +1,8 @@
 ﻿# Track Plan: Refactor Core Infrastructure
 
 ## Phase 1: Foundation & Testing Setup
-- [ ] Task: Initialize Node.js environment and install Jest for local testing.
-- [ ] Task: Create GAS service mocks (SpreadsheetApp, PropertiesService, UrlFetchApp) for unit tests.
+- [x] Task: Initialize Node.js environment and install Jest for local testing.
+- [x] Task: Create GAS service mocks (SpreadsheetApp, PropertiesService, UrlFetchApp) for unit tests.
 - [ ] Task: Conductor - User Manual Verification 'Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Core Logic Refactoring
