@@ -8,6 +8,7 @@
   getFontColors: jest.fn(),
   getFontWeights: jest.fn(),
   getA1Notation: jest.fn(),
+  getRow: jest.fn(),
   getCell: jest.fn(() => ({
     getFontColor: jest.fn(),
     getFontWeight: jest.fn(),
@@ -22,6 +23,7 @@ const mockSheet = {
 
 const mockSpreadsheet = {
   getActiveSheet: jest.fn(() => mockSheet),
+  getSheetByName: jest.fn(),
   toast: jest.fn(),
 };
 

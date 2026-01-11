@@ -1,11 +1,11 @@
 ﻿const SelectionProcessor = {
   processData: function(data, callback) {
-    return data.map(row => {
-      return row.map(cellValue => {
+    return data.map((row, rIndex) => {
+      return row.map((cellValue, cIndex) => {
         if (!cellValue || typeof cellValue !== 'string' || cellValue.trim().length < 3) {
           return cellValue;
         }
-        return callback(cellValue);
+        return callback(cellValue, rIndex, cIndex);
       });
     });
   }
