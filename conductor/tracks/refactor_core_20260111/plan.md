@@ -6,10 +6,10 @@
 - [ ] Task: Conductor - User Manual Verification 'Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Core Logic Refactoring
-- [ ] Task: Write Tests: API communication and error handling logic.
-- [ ] Task: Implement: Refactored `callGeminiAPI` using `gemini-1.5-flash` with robust error handling.
-- [ ] Task: Write Tests: Selection processing and "Selection Intelligence" logic.
-- [ ] Task: Implement: Unified `SelectionProcessor` to handle single cells, ranges, and columns.
+- [x] Task: Write Tests: API communication and error handling logic.
+- [x] Task: Implement: Refactored `callGeminiAPI` using `gemini-1.5-flash` with robust error handling.
+- [x] Task: Write Tests: Selection processing and "Selection Intelligence" logic.
+- [x] Task: Implement: Unified `SelectionProcessor` to handle single cells, ranges, and columns.
 - [ ] Task: Conductor - User Manual Verification 'Core Logic' (Protocol in workflow.md)
 
 ## Phase 3: Visual Audit & Integration

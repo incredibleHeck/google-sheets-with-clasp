@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1768146984916" clover="3.2.0">
-  <project timestamp="1768146984917" name="All files">
-    <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2" elements="17" coveredelements="9" complexity="0" loc="11" ncloc="11" packages="1" files="1" classes="1"/>
-    <file name="gas-mocks.js" path="C:\Users\me\google sheets\test-utils\gas-mocks.js">
+<coverage generated="1768147306193" clover="3.2.0">
+  <project timestamp="1768147306193" name="All files">
+    <metrics statements="33" coveredstatements="29" conditionals="22" coveredconditionals="19" methods="10" coveredmethods="6" elements="65" coveredelements="54" complexity="0" loc="33" ncloc="33" packages="2" files="3" classes="3"/>
+    <package name="src">
+      <metrics statements="22" coveredstatements="22" conditionals="22" coveredconditionals="19" methods="4" coveredmethods="4"/>
+      <file name="api.js" path="C:\Users\me\google sheets\src\api.js">
+        <metrics statements="14" coveredstatements="14" conditionals="13" coveredconditionals="11" methods="1" coveredmethods="1"/>
+        <line num="2" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="20" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="24" count="2" type="cond" truecount="5" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="31" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="32" count="1" type="stmt"/>
+      </file>
+      <file name="selection.js" path="C:\Users\me\google sheets\src\selection.js">
+        <metrics statements="8" coveredstatements="8" conditionals="9" coveredconditionals="8" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="7" type="stmt"/>
+        <line num="5" count="9" type="cond" truecount="5" falsecount="0"/>
+        <line num="6" count="7" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="14" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="test-utils">
       <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="4" count="0" type="stmt"/>
-      <line num="19" count="0" type="stmt"/>
-      <line num="20" count="0" type="stmt"/>
-      <line num="30" count="1" type="stmt"/>
-      <line num="31" count="0" type="stmt"/>
-      <line num="37" count="1" type="stmt"/>
-      <line num="41" count="1" type="stmt"/>
-      <line num="45" count="1" type="stmt"/>
-    </file>
+      <file name="gas-mocks.js" path="C:\Users\me\google sheets\test-utils\gas-mocks.js">
+        <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
