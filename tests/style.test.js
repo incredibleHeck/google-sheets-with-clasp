@@ -1,6 +1,6 @@
-﻿const { StyleManager } = require('../src/style');
+﻿const { StyleManager } = require("../src/style");
 
-describe('StyleManager', () => {
+describe("StyleManager", () => {
   const mockRange = {
     setFontColor: jest.fn(),
     setFontWeight: jest.fn(),
@@ -12,17 +12,17 @@ describe('StyleManager', () => {
     jest.clearAllMocks();
   });
 
-  test('applyActiveStyle sets blue and bold', () => {
+  test("applyActiveStyle sets sea blue and bold", () => {
     StyleManager.applyActiveStyle(mockRange);
-    expect(mockRange.setFontColor).toHaveBeenCalledWith('#0000FF');
-    expect(mockRange.setFontWeight).toHaveBeenCalledWith('bold');
+    expect(mockRange.setFontColor).toHaveBeenCalledWith("#00f9ff");
+    expect(mockRange.setFontWeight).toHaveBeenCalledWith("bold");
   });
 
-  test('revertStyle restores provided colors and weights', () => {
-    const colors = [['#ffffff']];
-    const weights = [['normal']];
+  test("revertStyle restores provided colors and weights", () => {
+    const colors = [["#ffffff"]];
+    const weights = [["normal"]];
     StyleManager.revertStyle(mockRange, colors, weights);
-    expect(mockRange.setFontColor).toHaveBeenCalledWith('#ffffff');
-    expect(mockRange.setFontWeight).toHaveBeenCalledWith('normal');
+    expect(mockRange.setFontColor).toHaveBeenCalledWith("#ffffff");
+    expect(mockRange.setFontWeight).toHaveBeenCalledWith("normal");
   });
 });

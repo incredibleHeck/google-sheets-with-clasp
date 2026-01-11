@@ -7,7 +7,11 @@
   setFontWeights: jest.fn(),
   getFontColors: jest.fn(),
   getFontWeights: jest.fn(),
-  getA1Notation: jest.fn(),
+  getA1Notation: jest.fn(() => "A1"),
+  getSheet: jest.fn(() => ({
+    getName: jest.fn(() => "Sheet1"),
+    getRange: jest.fn(() => mockRange),
+  })),
   getRow: jest.fn(),
   getCell: jest.fn(() => ({
     getFontColor: jest.fn(),
@@ -36,7 +40,7 @@ const SpreadsheetApp = {
       addToUi: jest.fn(),
     })),
     alert: jest.fn(),
-    ButtonSet: { OK: 'OK' },
+    ButtonSet: { OK: "OK" },
   })),
 };
 
@@ -55,4 +59,12 @@ const Utilities = {
   sleep: jest.fn(),
 };
 
-module.exports = { SpreadsheetApp, PropertiesService, UrlFetchApp, Utilities, mockRange, mockSheet, mockSpreadsheet };
+module.exports = {
+  SpreadsheetApp,
+  PropertiesService,
+  UrlFetchApp,
+  Utilities,
+  mockRange,
+  mockSheet,
+  mockSpreadsheet,
+};
