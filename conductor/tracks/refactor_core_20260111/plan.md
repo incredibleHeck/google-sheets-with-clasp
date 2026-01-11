@@ -12,7 +12,7 @@
 - [x] Task: Implement: Unified `SelectionProcessor` to handle single cells, ranges, and columns.
 - [ ] Task: Conductor - User Manual Verification 'Core Logic' (Protocol in workflow.md)
 
-## Phase 3: Visual Audit & Integration
+## Phase 3: Visual Audit & Integration [checkpoint: 43fb001]
 - [x] Task: Write Tests: Formatting state management and reversion logic.
 - [x] Task: Implement: `StyleManager` to handle Bright Blue/Bold highlights and color detection.
 - [x] Task: Implement: "Finalize/Approve Changes" menu logic to revert blue text to base color.
