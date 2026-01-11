@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1768147306193" clover="3.2.0">
-  <project timestamp="1768147306193" name="All files">
-    <metrics statements="33" coveredstatements="29" conditionals="22" coveredconditionals="19" methods="10" coveredmethods="6" elements="65" coveredelements="54" complexity="0" loc="33" ncloc="33" packages="2" files="3" classes="3"/>
+<coverage generated="1768147614460" clover="3.2.0">
+  <project timestamp="1768147614461" name="All files">
+    <metrics statements="74" coveredstatements="57" conditionals="42" coveredconditionals="34" methods="23" coveredmethods="14" elements="139" coveredelements="105" complexity="0" loc="74" ncloc="74" packages="2" files="5" classes="5"/>
     <package name="src">
-      <metrics statements="22" coveredstatements="22" conditionals="22" coveredconditionals="19" methods="4" coveredmethods="4"/>
+      <metrics statements="58" coveredstatements="46" conditionals="42" coveredconditionals="34" methods="15" coveredmethods="11"/>
       <file name="api.js" path="C:\Users\me\google sheets\src\api.js">
         <metrics statements="14" coveredstatements="14" conditionals="13" coveredconditionals="11" methods="1" coveredmethods="1"/>
         <line num="2" count="3" type="cond" truecount="1" falsecount="1"/>
@@ -18,36 +18,83 @@
         <line num="24" count="2" type="cond" truecount="5" falsecount="0"/>
         <line num="25" count="1" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
-        <line num="31" count="1" type="cond" truecount="3" falsecount="1"/>
-        <line num="32" count="1" type="stmt"/>
+        <line num="31" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="32" count="2" type="stmt"/>
+      </file>
+      <file name="main.js" path="C:\Users\me\google sheets\src\main.js">
+        <metrics statements="26" coveredstatements="16" conditionals="12" coveredconditionals="9" methods="9" coveredmethods="5"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="26" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="54" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="55" count="1" type="stmt"/>
       </file>
       <file name="selection.js" path="C:\Users\me\google sheets\src\selection.js">
         <metrics statements="8" coveredstatements="8" conditionals="9" coveredconditionals="8" methods="3" coveredmethods="3"/>
-        <line num="1" count="1" type="stmt"/>
+        <line num="1" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
         <line num="4" count="7" type="stmt"/>
         <line num="5" count="9" type="cond" truecount="5" falsecount="0"/>
         <line num="6" count="7" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
-        <line num="14" count="1" type="cond" truecount="3" falsecount="1"/>
-        <line num="15" count="1" type="stmt"/>
+        <line num="14" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="15" count="2" type="stmt"/>
+      </file>
+      <file name="style.js" path="C:\Users\me\google sheets\src\style.js">
+        <metrics statements="10" coveredstatements="8" conditionals="8" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="11" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="21" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="22" count="2" type="stmt"/>
       </file>
     </package>
     <package name="test-utils">
-      <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
+      <metrics statements="16" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="3"/>
       <file name="gas-mocks.js" path="C:\Users\me\google sheets\test-utils\gas-mocks.js">
-        <metrics statements="11" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
-        <line num="1" count="2" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
+        <metrics statements="16" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="3"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="30" count="2" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="28" count="3" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
-        <line num="37" count="2" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="52" count="3" type="stmt"/>
+        <line num="56" count="3" type="stmt"/>
       </file>
     </package>
   </project>

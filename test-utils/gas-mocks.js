@@ -1,21 +1,32 @@
-﻿const SpreadsheetApp = {
-  getActiveSpreadsheet: jest.fn(() => ({
-    getActiveSheet: jest.fn(() => ({
-      getRange: jest.fn(() => ({
-        getValues: jest.fn(),
-        setValues: jest.fn(),
-        setFontColor: jest.fn(),
-        setFontWeight: jest.fn(),
-        setBackground: jest.fn(),
-        getBackgrounds: jest.fn(),
-        getFontColors: jest.fn(),
-        getFontWeights: jest.fn(),
-        getA1Notation: jest.fn(),
-      })),
-      getName: jest.fn(),
-    })),
-    toast: jest.fn(),
+﻿const mockRange = {
+  getValues: jest.fn(),
+  setValues: jest.fn(),
+  setFontColor: jest.fn(),
+  setFontWeight: jest.fn(),
+  setFontColors: jest.fn(),
+  setFontWeights: jest.fn(),
+  getFontColors: jest.fn(),
+  getFontWeights: jest.fn(),
+  getA1Notation: jest.fn(),
+  getCell: jest.fn(() => ({
+    getFontColor: jest.fn(),
+    getFontWeight: jest.fn(),
   })),
+};
+
+const mockSheet = {
+  getRange: jest.fn(() => mockRange),
+  getActiveRange: jest.fn(() => mockRange),
+  getName: jest.fn(),
+};
+
+const mockSpreadsheet = {
+  getActiveSheet: jest.fn(() => mockSheet),
+  toast: jest.fn(),
+};
+
+const SpreadsheetApp = {
+  getActiveSpreadsheet: jest.fn(() => mockSpreadsheet),
   getUi: jest.fn(() => ({
     createMenu: jest.fn(() => ({
       addItem: jest.fn().mockReturnThis(),
@@ -42,4 +53,4 @@ const Utilities = {
   sleep: jest.fn(),
 };
 
-module.exports = { SpreadsheetApp, PropertiesService, UrlFetchApp, Utilities };
+module.exports = { SpreadsheetApp, PropertiesService, UrlFetchApp, Utilities, mockRange, mockSheet, mockSpreadsheet };

@@ -13,7 +13,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Core Logic' (Protocol in workflow.md)
 
 ## Phase 3: Visual Audit & Integration
-- [ ] Task: Write Tests: Formatting state management and reversion logic.
-- [ ] Task: Implement: `StyleManager` to handle Bright Blue/Bold highlights and color detection.
-- [ ] Task: Implement: "Finalize/Approve Changes" menu logic to revert blue text to base color.
+- [x] Task: Write Tests: Formatting state management and reversion logic.
+- [x] Task: Implement: `StyleManager` to handle Bright Blue/Bold highlights and color detection.
+- [x] Task: Implement: "Finalize/Approve Changes" menu logic to revert blue text to base color.
 - [ ] Task: Conductor - User Manual Verification 'Visual Audit' (Protocol in workflow.md)
