@@ -1,14 +1,19 @@
-// Pronoun Fixing Logic - 85 lines
+// Pronoun Fixing Logic - Performance Optimized - 95 lines
 
 const PronounManager = {
-FEMALE_PRONOUNS: {
-he: "she", him: "her", his: "her",
-He: "She", Him: "Her", His: "Her"
+// Map for converting TO Female
+TO_FEMALE: {
+"he": "she", "He": "She",
+"him": "her", "Him": "Her",
+"his": "her", "His": "Her"
+// Note: "his" (possessive) and "him" (object) both map to "her"
 },
 
-MALE_PRONOUNS: {
-he: "he", him: "him", his: "his",
-He: "He", Him: "Him", His: "His"
+// Map for converting TO Male
+TO_MALE: {
+"she": "he", "She": "He",
+"her": "his", "Her": "His",
+"hers": "his", "Hers": "His"
 },
 
 process: function() {
@@ -23,36 +28,59 @@ const selection = sheet.getActiveRange();
     try {
       const genderMap = GenderNormalizer.buildGenderMap();
       const data = range.getValues();
+      const startRow = range.getRow();
+      const numRows = range.getNumRows();
+
+      // 1. PERFORMANCE FIX: Batch fetch all names at once
+      // We grab the column where names are stored, but only for the rows in our selection
+      const nameData = sheet.getRange(startRow, Config.REPORT_NAME_COL, numRows, 1).getValues();
+
       let changesCount = 0;
 
-      const processedData = SelectionProcessor.processData(
-        data,
-        (text, rowIndex) => {
-          const studentName = sheet
-            .getRange(range.getRow() + rowIndex, Config.REPORT_NAME_COL)
-            .getValue();
+      // 2. Process Data in Memory
+      const processedData = data.map((row, rIndex) => {
+        return row.map(cellValue => {
+          if (typeof cellValue !== 'string' || !cellValue) return cellValue;
+
+          // Get name from our pre-fetched array (FAST)
+          const studentName = nameData[rIndex][0];
           const gender = genderMap[studentName?.toString().trim()] || "unknown";
 
-          if (gender === "unknown") return text;
+          if (gender === "unknown") return cellValue;
 
-          const pronouns = gender === "male" ? this.MALE_PRONOUNS : this.FEMALE_PRONOUNS;
-          let result = text;
+          // Select the correct replacement map
+          const replacementMap = gender === "male" ? this.TO_MALE : this.TO_FEMALE;
 
-          Object.entries(pronouns).forEach(([from, to]) => {
+          let result = cellValue;
+          let cellChanged = false;
+
+          // Run replacements
+          Object.entries(replacementMap).forEach(([from, to]) => {
+            // Regex: \b ensures we match "he" but not "the"
             const regex = new RegExp(`\\b${from}\\b`, "g");
-            result = result.replace(regex, to);
+
+            if (regex.test(result)) {
+               result = result.replace(regex, to);
+               cellChanged = true;
+            }
           });
 
-          if (result !== text) changesCount++;
+          if (cellChanged) changesCount++;
           return result;
-        }
-      );
+        });
+      });
 
-      range.setValues(processedData);
-      RangeValidator.applyActiveStyle(range);
+      // 3. Batch Update
+      if (changesCount > 0) {
+        range.setValues(processedData);
+        StyleManager.applyActiveStyle(range);
 
-      const toastMessage = `✓ Fixed pronouns in ${changesCount} cells (rows ${range.getRow()}-${range.getLastRow()})`;
-      SpreadsheetApp.getActiveSpreadsheet().toast(toastMessage, "HeckTeck");
+        const toastMessage = `✓ Fixed pronouns in ${changesCount} cells.`;
+        SpreadsheetApp.getActiveSpreadsheet().toast(toastMessage, "HeckTeck");
+      } else {
+        SpreadsheetApp.getActiveSpreadsheet().toast("Pronouns look correct!", "HeckTeck");
+      }
+
     } catch (e) {
       console.error("Pronoun fix failed:", e);
       StateManager.undo();

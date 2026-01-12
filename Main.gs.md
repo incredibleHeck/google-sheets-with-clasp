@@ -1,43 +1,56 @@
-// Menu & Orchestration Only - 58 lines
+// ==========================================
+// HECKTECK Menu.gs
+// ==========================================
 
 function onOpen() {
-SpreadsheetApp.getUi()
-.createMenu("HeckTeck Tools")
-.addItem("⚡ Auto-Fix Pronouns (Sea Blue Text)", "fixPronouns")
-.addItem("✨ AI Polish (Grammar & Tone)", "polishSelectedCells")
+const ui = SpreadsheetApp.getUi();
+
+ui.createMenu('⚡ HeckTeck AI')
+.addItem('✨ Polish Grammar & Style', 'runPolish')
+.addItem('⚧ Fix Pronouns (Auto-Detect)', 'runPronouns')
 .addSeparator()
-.addItem("↩️ Undo Last Action", "undoLastAction")
-.addItem("✅ Finalize/Approve All Changes", "finalizeChanges")
-.addItem("🔍 Detect Base Styles", "detectBaseStyles")
+.addItem('🎨 Finalize Changes (Remove Colors)', 'runFinalize')
+.addItem('↩️ Undo Last Action', 'runUndo')
+.addSeparator()
+.addSubMenu(ui.createMenu('⚙️ Settings')
+.addItem('Detect Base Style', 'runDetectStyle')
+.addItem('Reset Selection Style', 'runResetStyle')
+)
 .addToUi();
 }
 
-function polishSelectedCells() {
-try {
+// ------------------------------------------
+// Wrapper Functions (Connecting Menu to Logic)
+// ------------------------------------------
+
+function runPolish() {
+// Ensure base style is known before we mess it up
+if (!PropertiesService.getScriptProperties().getProperty("BASE_TEXT_COLOR")) {
+StateManager.detectBaseStyles();
+}
 PolishManager.process();
-} catch (e) {
-console.error("Polish error:", e);
-SpreadsheetApp.getActiveSpreadsheet().toast(`Error: ${e.message}`, "HeckTeck Error");
-}
 }
 
-function fixPronouns() {
-try {
+function runPronouns() {
+if (!PropertiesService.getScriptProperties().getProperty("BASE_TEXT_COLOR")) {
+StateManager.detectBaseStyles();
+}
 PronounManager.process();
-} catch (e) {
-console.error("Pronoun fix error:", e);
-SpreadsheetApp.getActiveSpreadsheet().toast(`Error: ${e.message}`, "HeckTeck Error");
-}
 }
 
-function undoLastAction() {
-StateManager.undo();
-}
-
-function finalizeChanges() {
+function runFinalize() {
 StateManager.finalize();
 }
 
-function detectBaseStyles() {
+function runUndo() {
+StateManager.undo();
+}
+
+function runDetectStyle() {
 StateManager.detectBaseStyles();
+}
+
+function runResetStyle() {
+const range = SpreadsheetApp.getActiveRange();
+StyleManager.resetToDefault(range);
 }
